@@ -1,0 +1,107 @@
+﻿@page
+@model WebApp_ExamenPruebaFinal.Pages.RegisterModel
+@{
+}
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/controlactions.js"></script>
+<script src="~/js/pages/user.js"></script>
+
+<h1>Registro APG</h1>
+<br />
+<form>
+	<div class="form-group">
+		<label for="exampleInputEmail1" class="form-label mt-4">Nombre</label>
+		<input type="text" class="form-control" id="txt_Name" placeholder="Ingrese su nombre">
+	</div>
+
+	<div class="form-group">
+		<label for="exampleInputEmail1" class="form-label mt-4">Apellido 1</label>
+		<input type="text" class="form-control" id="txt_LastName1" placeholder="Ingrese su Primer Appelido">
+	</div>
+
+	<div class="form-group">
+		<label for="exampleInputEmail1" class="form-label mt-4" >Apellido 2</label>
+		<input type="text" class="form-control" id="txt_LastName2"  placeholder="Ingrese su segundo apellido">
+	</div>
+
+	<div class="form-group">
+		<label for="exampleInputEmail1" class="form-label mt-4" >Email</label>
+		<input type="email" class="form-control" id="txt_Email" aria-describedby="emailHelp" placeholder="Ingrese su Email">
+	</div>
+
+	<div class="form-group">
+		<label for="exampleInputEmail1" class="form-label mt-4" >Contraseña</label>
+		<input type="password" class="form-control" id="txt_Password"  placeholder="Ingrese una Contraseña">
+	</div>
+
+	<div class="form-group">
+		<label for="exampleInputEmail1" class="form-label mt-4" >Confirmar Contraseña</label>
+		<input type="password" class="form-control" id="txt_password2"  placeholder="Confirme su contraseña">
+	</div>
+	<br />
+	<select name="opciones" id="SelectQuestion">
+		<option value="1">¿Cual es el nombre de su mamá?</option>
+		<option value="2">Postre favorito?</option>
+		<option value="3">País Favorito?</option>
+		<option value="4">¿Cual es el nombre de su papá?</option>
+		<option value="5">Cuantos hermanos tiene?</option>
+		<option value="6">Canción favorita?</option>
+	</select>
+	<br />
+	<div class="form-group">
+		<label for="exampleInputEmail1" class="form-label mt-4">Respuesta a la Pregunta Secreta</label>
+		<input type="text" class="form-control" id="txt_questionAnserwer" placeholder="Ingrese su Respuesta">
+	</div>
+	<br />
+	<br />
+	<button type="button" id="CreateUser" class="btn btn-outline-success">Registrar</button>
+</form>
+<script>
+	function CreateUserController() {
+		this.ViewName = "CreateUser";
+		this.ApiService = "User";
+
+		this.InitView = function () {
+			console.log("User view init");
+
+			//Asiganacion del evente create
+
+			$("#CreateUser").click(function () {
+				var view = new CreateUserController();
+				view.Create();
+			})
+
+		}
+
+		this.Create = function () {
+			//Crear un DTO de user
+			alert("Usuario Registrado")
+			var user = {};
+			user.Name = $("#txt_Name").val();
+			user.LastName1 = $("#txt_LastName1").val();
+			user.LastName2 = $("#txt_LastName2").val();
+			user.Email = $("#").val();
+			user.Password = $("#txt_Password").val();
+			user.UserCode = " ";
+			user.QuestionSecret = $("#SelectQuestion").val();
+			user.QuestionAnswer = $("#txt_questionAnserwer").val();
+
+			var ctrlActions = new ControlActions();
+			var serviceToCreate = this.ApiService + "/Create";
+
+			ctrlActions.PostToAPI(serviceToCreate, user, function () {
+				console.log("Data enviada al API");
+			});
+
+			console.log("Message --> " + JSON.stringify(user));
+		}
+	}
+	//Instanciamiento inicial de la clase.
+	//Siempre se ejecuta al finalizar la carga de la página.
+	//Document: Hace referencia al contenido del HTML
+	$(document).ready(function () {
+		var view = new CreateUserController();
+		view.InitView();
+	});
+</script>
